@@ -1,0 +1,187 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+
+header {
+    background: #fff;
+    padding: 1rem 5%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+
+
+nav {
+    display: flex;
+    gap: 2rem;
+}
+
+nav a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+}
+
+
+
+.chat-button {
+    background: #ff6b35;
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    text-decoration: none;
+}
+
+
+.main {
+    height: 70vh;
+
+    background: url('img/main-back.avif');
+
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    
+}
+
+.main-cont {
+    position: absolute;
+    
+    top: 50%;
+    left: 50%; 
+     transform: translate(-50%, -50%);
+    text-align: center;
+    color: white;
+}
+
+.main-cont h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.order-btn {
+    background: #ff6b35;
+    color: white;
+    padding: 1rem 2.5rem;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+
+.features {
+    padding: 4rem 5%;
+    background: #f9f9f9;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.feature-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.feature-card i {
+    font-size: 2.5rem;
+    color: #ff6b35;
+    margin-bottom: 1rem;
+}
+
+
+.chatbot-icon {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background: #ff6b35;
+
+    /* color: white; */
+    font-size: 1.5rem;
+
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+
+
+
+footer {
+    background: #333;
+    color: white;
+    padding: 3rem 5%;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+}
+
+.social-icons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.social-icons a {
+    color: white;
+    font-size: 1.5rem;
+}
+
+
+@media (max-width: 768px) {
+    nav {
+        display: flex;
+    }
+
+    .hero-content h1 {
+        font-size: 1.8rem;
+        padding: 0 1rem;
+    }
+
+    .features-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero {
+        height: 50vh;
+    }
+
+    .hero-content h1 {
+        font-size: 1.5rem;
+    }
+
+    .order-btn {
+        padding: 0.8rem 1.5rem;
+        font-size: 1rem;
+    }
+
+    .chatbot-icon {
+        width: 35px;
+        height: 30px;
+        bottom: 1rem;
+        right: 1rem;
+        
+    }
+}
