@@ -5,6 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Menu Card</title>
     <link rel="stylesheet" href="menu1.css">
+
+
+    
+
+    
+        
+        
     
         
 </head>
@@ -103,13 +110,24 @@
             <div class="cart-total">
                 <span>Total: ₹<span class="total-amount">0</span></span>
             </div>
+            <div>
+
+                <input type="number" id="table-number" min="1" placeholder="Enter table Number" required>
+            </div>
             <button class="place-order">PLACE ORDER</button>
             <button class="close-cart">Close</button>
         </div>
     </div>
 
 
-    <script src="menu.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+
+
+
+
+ <script  type="module" src="menu.js"></script>
 
 
 

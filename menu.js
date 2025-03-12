@@ -1,3 +1,29 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-analytics.js";
+
+import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyDQAGsXMaF7xw2-Edsa82scqqEGGCTAZiQ",
+  authDomain: "restaurant-orders-8fd62.firebaseapp.com",
+  projectId: "restaurant-orders-8fd62",
+  storageBucket: "restaurant-orders-8fd62.firebasestorage.app",
+  messagingSenderId: "804671895076",
+  appId: "1:804671895076:web:36399f85471dde69520ab1",
+  measurementId: "G-88XSSSCFJ7"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+  
+
+
+
 // Initialize cart
 let cart = [];
 let totalAmount = 0;
@@ -118,18 +144,73 @@ document.querySelector('.view-cart').addEventListener('click', displayCart);
 document.querySelector('.close-cart').addEventListener('click', closeCartModal);
 
 // Event listener for "PLACE ORDER" button
+// document.querySelector('.place-order').addEventListener('click', () => {
+//     if (cart.length === 0) {
+//         alert('Your cart is empty. Please add items to place an order.');
+//     } else {
+//         alert('Order placed successfully!');
+//         cart = [];
+//         totalAmount = 0;
+//         updateCartCount();
+//         closeCartModal();
+//         document.querySelectorAll('.add-btn').forEach(button => {
+//             button.innerHTML = 'ADD';
+//             button.classList.remove('count-mode');
+//         });
+//     }
+// });
+
+
+
+
+
+import { getFirestore } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+const db = getFirestore(app);
+
+
+// Event listener for "PLACE ORDER" button
 document.querySelector('.place-order').addEventListener('click', () => {
+    const tableNumber = document.getElementById('table-number').value;
+
     if (cart.length === 0) {
         alert('Your cart is empty. Please add items to place an order.');
+    } else if (!tableNumber) {
+        alert('Please enter a table number.');
     } else {
-        alert('Order placed successfully!');
-        cart = [];
-        totalAmount = 0;
-        updateCartCount();
-        closeCartModal();
-        document.querySelectorAll('.add-btn').forEach(button => {
-            button.innerHTML = 'ADD';
-            button.classList.remove('count-mode');
-        });
+        // Save the order to Firestore
+        const order = {
+            tableNumber: parseInt(tableNumber),
+            items: [...cart], // Copy the cart items
+            totalAmount: totalAmount,
+            status: 'Pending', // Order status
+            timestamp: firebase.firestore.FieldValue.serverTimestamp() // Add timestamp
+        };
+
+
+
+        addDoc(collection(db, "orders"), {
+        tableNumber: parseInt(tableNumber),
+        items: cart.map(item => ({
+        name: item.name,
+        price: item.price,
+        quantity: item.quantity
+         })),
+        totalAmount: totalAmount,
+        status: "Pending",
+       timestamp: serverTimestamp()
+       }).then(() => {
+       alert(`Order placed successfully for Table ${tableNumber}!`);
+     cart = [];
+    totalAmount = 0;
+    updateCartCount();
+    closeCartModal();
+    document.querySelectorAll('.add-btn').forEach(button => updateButton(button, 0));
+    })
+    .catch(error => {
+    console.error("Error placing order:", error);
+   });
+
+
+        
     }
 });

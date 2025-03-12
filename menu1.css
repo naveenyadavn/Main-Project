@@ -234,6 +234,12 @@ body {
 }
 
 
+#table-number{
+    margin-bottom: 20px;
+    border-radius: 5px;
+    justify-content: center;
+}
+
 /* itme card*/
 @media (max-width: 768px) {
     .menu-card {
