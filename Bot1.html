@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Chatbot</title>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; background: #f4f4f4; }
+        .chat-container { width: 350px; background: white; margin: auto; margin-top: 50px; padding: 10px; border-radius: 10px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); }
+        .chat-box { height: 400px; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; }
+        .message { max-width: 75%; padding: 10px; margin-bottom: 10px; border-radius: 8px; }
+        .user-message { background: #007bff; color: white; align-self: flex-end; }
+        .bot-message { background: #e0e0e0; color: black; align-self: flex-start; }
+        .input-container { display: flex; border-top: 1px solid #ccc; }
+        .input-box { flex: 1; padding: 12px; border: none; outline: none; }
+        .send-btn { padding: 12px 20px; border: none; background: #007bff; color: white; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <h2>Restaurant Chatbot</h2>
+    <div class="chat-container">
+        <div class="chat-box" id="chat-box"></div>
+        <div class="input-container">
+            <input type="text" id="user-input" class="input-box" placeholder="Type a message...">
+            <button class="send-btn" onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <script>
+        // 🔥 Step 1: Initialize Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyDQAGsXMaF7xw2-Edsa82scqqEGGCTAZiQ",
+            authDomain: "restaurant-orders-8fd62.firebaseapp.com",
+            projectId: "restaurant-orders-8fd62",
+            storageBucket: "restaurant-orders-8fd62.firebasestorage.app",
+            messagingSenderId: "804671895076",
+            appId: "1:804671895076:web:36399f85471dde69520ab1",
+            measurementId: "G-88XSSSCFJ7"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        // 🔥 Step 2: Define menu & order function
+        const menu = {
+            "Pizza": "$10",
+            "Burger": "$5",
+            "Pasta": "$7",
+            "Salad": "$4",
+            "Chicken Biryani": "$12"
+        };
+
+        function addMessage(sender, text, className) {
+            const chatBox = document.getElementById("chat-box");
+            const messageDiv = document.createElement("div");
+            messageDiv.classList.add("message", className);
+            messageDiv.innerHTML = `<strong>${sender}:</strong> ${text}`;
+            chatBox.appendChild(messageDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function sendMessage() {
+            const inputField = document.getElementById("user-input");
+            const userText = inputField.value.trim().toLowerCase();
+
+            if (userText === "") return;
+
+            addMessage("You", userText, "user-message");
+            inputField.value = "";
+
+            setTimeout(() => {
+                let botReply = "";
+
+                if (userText.includes("menu")) {
+                    botReply = "Here is our menu:<br>" + Object.entries(menu).map(([item, price]) => `${item}: ${price}`).join("<br>");
+                } else if (userText.startsWith("order ")) {
+                    let item = userText.replace("order ", "").trim();
+                    let formattedItem = item.charAt(0).toUpperCase() + item.slice(1);
+
+                    if (menu[formattedItem]) {
+                        saveOrderToFirebase(formattedItem);
+                        botReply = `✅ Your order for ${formattedItem} is placed!`;
+                    } else {
+                        botReply = `❌ Sorry, we don't have ${formattedItem} on our menu. Try 'menu' to see available items.`;
+                    }
+                } else if (userText.includes("my orders")) {
+                    fetchOrdersFromFirebase();
+                    return;
+                } else {
+                    botReply = "I can help you with menu, orders, and special items. Try asking 'What are your timings?'";
+                }
+
+                addMessage("Bot", botReply, "bot-message");
+            }, 500);
+        }
+
+        // 🔥 Step 3: Save order to Firebase
+        function saveOrderToFirebase(item) {
+            const ordersRef = database.ref("orders");
+            const newOrder = ordersRef.push();
+            newOrder.set({
+                item: item,
+                timestamp: new Date().toISOString()
+            });
+        }
+
+        // 🔥 Step 4: Fetch orders from Firebase
+        function fetchOrdersFromFirebase() {
+            const ordersRef = database.ref("orders");
+
+            ordersRef.once("value", (snapshot) => {
+                if (snapshot.exists()) {
+                    let ordersList = [];
+                    snapshot.forEach((childSnapshot) => {
+                        let order = childSnapshot.val().item;
+                        ordersList.push(order);
+                    });
+
+                    let botReply = ordersList.length > 0
+                        ? `🛒 Your current orders: ${ordersList.join(", ")}`
+                        : "🛒 You have no orders yet.";
+
+                    addMessage("Bot", botReply, "bot-message");
+                } else {
+                    addMessage("Bot", "🛒 You have no orders yet.", "bot-message");
+                }
+            });
+        }
+
+        // Show greeting message on load
+        window.onload = function() {
+            setTimeout(() => {
+                addMessage("Bot", "Hello! Welcome to our restaurant. Type 'menu' to see available items or 'order Pizza' to place an order.", "bot-message");
+            }, 500);
+        };
+    </script>
+
+</body>
+</html>
