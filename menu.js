@@ -2,11 +2,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebas
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-analytics.js";
 
 import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyDQAGsXMaF7xw2-Edsa82scqqEGGCTAZiQ",
   authDomain: "restaurant-orders-8fd62.firebaseapp.com",
@@ -59,7 +55,7 @@ function removeFromCart(name, price) {
     }
 }
 
-// Function to update the button to show count
+
 function updateButton(button, count) {
     if (count > 0) {
         button.innerHTML = `
@@ -143,22 +139,6 @@ document.querySelector('.view-cart').addEventListener('click', displayCart);
 // Event listener for "Close" button in the cart modal
 document.querySelector('.close-cart').addEventListener('click', closeCartModal);
 
-// Event listener for "PLACE ORDER" button
-// document.querySelector('.place-order').addEventListener('click', () => {
-//     if (cart.length === 0) {
-//         alert('Your cart is empty. Please add items to place an order.');
-//     } else {
-//         alert('Order placed successfully!');
-//         cart = [];
-//         totalAmount = 0;
-//         updateCartCount();
-//         closeCartModal();
-//         document.querySelectorAll('.add-btn').forEach(button => {
-//             button.innerHTML = 'ADD';
-//             button.classList.remove('count-mode');
-//         });
-//     }
-// });
 
 
 
