@@ -5,8 +5,6 @@
     font-family: Arial, sans-serif;
 }
 body {
-    
-
     display: grid;
     justify-content: center;
     padding: 20px;
@@ -15,14 +13,10 @@ body {
     width: 700px;
     height: 150px;
     display: flex;
-    
     border-radius: px;
-    /*box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);*/
-    
     padding: 15px;
     position: relative;
     border-bottom: 0.1px solid black;
-    /* border: 2px solid black; */
 }
 .menu-description {
     flex: 1;
@@ -62,9 +56,6 @@ body {
     border-radius: 5px;
     cursor: pointer;
     justify-content: center;
-
-
-   
 }
 .add-btn:hover {
     background-color: #008f5f;

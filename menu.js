@@ -12,25 +12,22 @@ const firebaseConfig = {
   appId: "1:804671895076:web:36399f85471dde69520ab1",
   measurementId: "G-88XSSSCFJ7"
 };
-
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
   
 
 
 
-// Initialize cart
+
 let cart = [];
 let totalAmount = 0;
 
-// Function to update the cart count
+
 function updateCartCount() {
     const itemCount = cart.reduce((sum, item) => sum + item.quantity, 0);
     document.querySelector('.item-count').textContent = `${itemCount} items Added`;
 }
 
-// Function to add item to cart
 function addToCart(name, price) {
     const existingItem = cart.find(item => item.name === name);
     if (existingItem) {
@@ -42,7 +39,7 @@ function addToCart(name, price) {
     updateCartCount();
 }
 
-// Function to remove item from cart
+
 function removeFromCart(name, price) {
     const existingItem = cart.find(item => item.name === name);
     if (existingItem) {
@@ -65,15 +62,12 @@ function updateButton(button, count) {
         `;
         button.classList.add('count-mode');
 
-        // Add event listeners for + and -
         const minusButton = button.querySelector('.minus');
         const plusButton = button.querySelector('.plus');
 
-        // Remove existing event listeners to avoid duplication
         minusButton.replaceWith(minusButton.cloneNode(true));
         plusButton.replaceWith(plusButton.cloneNode(true));
 
-        // Add new event listeners
         button.querySelector('.minus').addEventListener('click', (e) => {
             e.stopPropagation();
             const name = button.getAttribute('data-name');
